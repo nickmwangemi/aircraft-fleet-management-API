@@ -28,3 +28,10 @@ def update_aircraft(db: Session, serial_number: str, aircraft: AircraftCreate):
         db.commit()
         db.refresh(db_aircraft)
     return db_aircraft
+
+
+def delete_aircraft(db: Session, serial_number: str):
+    if db_aircraft := get_aircraft(db, serial_number):
+        db.delete(db_aircraft)
+        db.commit()
+        db.refresh(db_aircraft)
