@@ -27,7 +27,7 @@ def create_flight(db: Session, flight: FlightCreate):
 def update_flight(db: Session, flight_id: int, flight: FlightCreate):
     db_flight = get_flight(db, flight_id)
     if db_flight:
-        for key, value in flight.model_dump().items():
+        for key, value in flight.model_dump(exclude_unset=True).items():
             setattr(db_flight, key, value)
         db.commit()
         db.refresh(db_flight)
