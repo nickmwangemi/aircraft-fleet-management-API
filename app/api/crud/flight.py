@@ -16,7 +16,8 @@ def get_flights(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_flight(db: Session, flight: FlightCreate):
-    db_flight = Flight(**flight.model_dump())
+    flight_data = flight.model_dump(exclude_unset=True, exclude={"id"})
+    db_flight = Flight(**flight_data)
     db.add(db_flight)
     db.commit()
     db.refresh(db_flight)
@@ -26,7 +27,7 @@ def create_flight(db: Session, flight: FlightCreate):
 def update_flight(db: Session, flight_id: int, flight: FlightCreate):
     db_flight = get_flight(db, flight_id)
     if db_flight:
-        for key, value in flight.model_dump().items():
+        for key, value in flight.model_dump(exclude_unset=True).items():
             setattr(db_flight, key, value)
         db.commit()
         db.refresh(db_flight)
@@ -57,4 +58,8 @@ def search_flights(
         query = query.filter(
             Flight.departure_datetime.between(start_datetime, end_datetime)
         )
+    elif start_datetime:
+        query = query.filter(Flight.departure_datetime >= start_datetime)
+    elif end_datetime:
+        query = query.filter(Flight.departure_datetime <= end_datetime)
     return query.all()

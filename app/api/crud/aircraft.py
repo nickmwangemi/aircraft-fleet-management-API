@@ -23,7 +23,7 @@ def create_aircraft(db: Session, aircraft: AircraftCreate):
 def update_aircraft(db: Session, serial_number: str, aircraft: AircraftCreate):
     db_aircraft = get_aircraft(db, serial_number)
     if db_aircraft:
-        for key, value in aircraft.model_dump().items():
+        for key, value in aircraft.model_dump(exclude_unset=True).items():
             setattr(db_aircraft, key, value)
         db.commit()
         db.refresh(db_aircraft)
