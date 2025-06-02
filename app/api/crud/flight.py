@@ -16,7 +16,8 @@ def get_flights(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_flight(db: Session, flight: FlightCreate):
-    db_flight = Flight(**flight.model_dump())
+    flight_data = flight.model_dump(exclude_unset=True, exclude={"id"})
+    db_flight = Flight(**flight_data)
     db.add(db_flight)
     db.commit()
     db.refresh(db_flight)
