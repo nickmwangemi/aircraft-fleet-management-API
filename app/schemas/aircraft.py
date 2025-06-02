@@ -1,16 +1,20 @@
-from pydantic import BaseModel
 from datetime import datetime
 
+from pydantic import BaseModel
+
+
 class AircraftBase(BaseModel):
-	serial_number: str
-	manufacturer: str
+    serial_number: str
+    manufacturer: str
+
 
 class AircraftCreate(BaseModel):
-	pass
+    pass
+
 
 class Aircraft(AircraftBase):
-	created_at: datetime
-	updated_at: datetime
+    created_at: datetime
+    updated_at: datetime
 
-	class Config:
-		orm_mode = True
+    class Config:
+        orm_mode = True
