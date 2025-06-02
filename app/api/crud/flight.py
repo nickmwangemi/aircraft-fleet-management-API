@@ -58,4 +58,8 @@ def search_flights(
         query = query.filter(
             Flight.departure_datetime.between(start_datetime, end_datetime)
         )
+    elif start_datetime:
+        query = query.filter(Flight.departure_datetime >= start_datetime)
+    elif end_datetime:
+        query = query.filter(Flight.departure_datetime <= end_datetime)
     return query.all()
