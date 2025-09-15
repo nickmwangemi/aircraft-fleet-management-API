@@ -13,7 +13,7 @@ def get_aircrafts(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_aircraft(db: Session, aircraft: AircraftCreate):
-    db_aircraft = Aircraft.create(**aircraft.model_dump())
+    db_aircraft = Aircraft(**aircraft.model_dump())
     db.add(db_aircraft)
     db.commit()
     db.refresh(db_aircraft)
